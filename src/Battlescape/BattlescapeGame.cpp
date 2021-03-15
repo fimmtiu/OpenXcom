@@ -34,6 +34,7 @@
 #include "UnitDieBState.h"
 #include "UnitPanicBState.h"
 #include "AIModule.h"
+#include "JanetAIModule.h"
 #include "Pathfinding.h"
 #include "../Mod/AlienDeployment.h"
 #include "../Engine/Game.h"
@@ -77,6 +78,8 @@ BattlescapeGame::BattlescapeGame(SavedBattleGame *save, BattlescapeState *parent
 
 	_debugPlay = false;
 
+	JanetAIModule::SetUp();
+
 	checkForCasualties(0, 0, true);
 	cancelCurrentAction();
 }
@@ -91,6 +94,8 @@ BattlescapeGame::~BattlescapeGame()
 	{
 		delete *i;
 	}
+
+	JanetAIModule::TearDown();
 	cleanupDeleted();
 }
 
@@ -109,7 +114,8 @@ void BattlescapeGame::think()
 			return;
 		}
 		// it's a non player side (ALIENS or CIVILIANS)
-		if (_save->getSide() != FACTION_PLAYER)
+		// if (_save->getSide() != FACTION_PLAYER)
+		if (1)
 		{
 			_save->resetUnitHitStates();
 			if (!_debugPlay)
@@ -212,7 +218,15 @@ void BattlescapeGame::handleAI(BattleUnit *unit)
 	if (!ai)
 	{
 		// for some reason the unit had no AI routine assigned..
-		unit->setAIModule(new AIModule(_save, unit, 0));
+		if (Options::traceAI) { Log(LOG_INFO) << "#" << unit->getId() << "--" << unit->getType() << " had no AI installed!"; }
+		if (unit->getFaction() == FACTION_PLAYER)
+		{
+			unit->setAIModule(new JanetAIModule(_save, unit, 0));
+		}
+		else
+		{
+			unit->setAIModule(new AIModule(_save, unit, 0));
+		}
 		ai = unit->getAIModule();
 	}
 	_AIActionCounter++;
