@@ -40,6 +40,7 @@
 #include "FileMap.h"
 #include "Unicode.h"
 #include "../Menu/TestState.h"
+#include "RNG.h"
 
 namespace OpenXcom
 {
@@ -77,7 +78,7 @@ Game::Game(const std::string &title) : _screen(0), _cursor(0), _lang(0), _save(0
 
 	// trap the mouse inside the window
 	SDL_WM_GrabInput(Options::captureMouse);
-	
+
 	// Set the window icon
 	CrossPlatform::setWindowIcon(IDI_ICON1, FileMap::getFilePath("openxcom.png"));
 
@@ -93,7 +94,7 @@ Game::Game(const std::string &title) : _screen(0), _cursor(0), _lang(0), _save(0
 
 	// Create cursor
 	_cursor = new Cursor(9, 13);
-	
+
 	// Create invisible hardware cursor to workaround bug with absolute positioning pointing devices
 	SDL_ShowCursor(SDL_ENABLE);
 	Uint8 cursor = 0;
@@ -104,6 +105,12 @@ Game::Game(const std::string &title) : _screen(0), _cursor(0), _lang(0), _save(0
 
 	// Create blank language
 	_lang = new Language();
+
+	// Set the random seed if necessary
+	if (Options::randomSeed >= 0)
+	{
+		RNG::setSeed(Options::randomSeed);
+	}
 
 	_timeOfLastFrame = 0;
 }
@@ -287,7 +294,7 @@ void Game::run()
 				break;
 			}
 		}
-		
+
 		// Process rendering
 		if (runningState != PAUSED)
 		{
@@ -332,7 +339,7 @@ void Game::run()
 		// Save on CPU
 		switch (runningState)
 		{
-			case RUNNING: 
+			case RUNNING:
 				SDL_Delay(1); //Save CPU from going 100%
 				break;
 			case SLOWED: case PAUSED:
