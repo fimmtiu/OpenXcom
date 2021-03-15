@@ -411,8 +411,17 @@ void BattlescapeGenerator::nextStage()
 	}
 
 	AlienDeployment *ruleDeploy = _game->getMod()->getDeployment(_save->getMissionType(), true);
-	_save->setTurnLimit(ruleDeploy->getTurnLimit());
-	_save->setChronoTrigger(ruleDeploy->getChronoTrigger());
+
+	if (Options::turnLimit > 0)
+	{
+		_save->setTurnLimit(Options::turnLimit);
+		_save->setChronoTrigger(FORCE_WIN);
+	}
+	else
+	{
+		_save->setTurnLimit(ruleDeploy->getTurnLimit());
+		_save->setChronoTrigger(ruleDeploy->getChronoTrigger());
+	}
 	_save->setCheatTurn(ruleDeploy->getCheatTurn());
 	ruleDeploy->getDimensions(&_mapsize_x, &_mapsize_y, &_mapsize_z);
 	size_t pick = RNG::generate(0, ruleDeploy->getTerrains().size() -1);
@@ -546,8 +555,16 @@ void BattlescapeGenerator::run()
 {
 	AlienDeployment *ruleDeploy = _game->getMod()->getDeployment(_ufo?_ufo->getRules()->getType():_save->getMissionType(), true);
 
-	_save->setTurnLimit(ruleDeploy->getTurnLimit());
-	_save->setChronoTrigger(ruleDeploy->getChronoTrigger());
+	if (Options::turnLimit > 0)
+	{
+		_save->setTurnLimit(Options::turnLimit);
+		_save->setChronoTrigger(FORCE_WIN);
+	}
+	else
+	{
+		_save->setTurnLimit(ruleDeploy->getTurnLimit());
+		_save->setChronoTrigger(ruleDeploy->getChronoTrigger());
+	}
 	_save->setCheatTurn(ruleDeploy->getCheatTurn());
 	ruleDeploy->getDimensions(&_mapsize_x, &_mapsize_y, &_mapsize_z);
 
