@@ -194,7 +194,18 @@ void BriefingState::btnOkClick(Action *)
 		_game->pushState(bs);
 		_game->getSavedGame()->getSavedBattle()->setBattleState(bs);
 		_game->pushState(new NextTurnState(_game->getSavedGame()->getSavedBattle(), bs));
-		_game->pushState(new InventoryState(false, bs));
+		InventoryState *inventoryState = new InventoryState(false, bs);
+		_game->pushState(inventoryState);
+
+		if (Options::runBattle.size() > 0)
+		{
+			SDL_Event ev;
+			ev.type = SDL_MOUSEBUTTONDOWN;
+			ev.button.button = SDL_BUTTON_LEFT;
+
+			Action click = Action(&ev, 0.0, 0.0, 0, 0);
+			inventoryState->btnOkClick(&click);
+		}
 	}
 	else
 	{
