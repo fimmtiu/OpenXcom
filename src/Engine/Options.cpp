@@ -104,9 +104,9 @@ void create()
 	_info.push_back(OptionInfo("battleDragScrollButton", &battleDragScrollButton, SDL_BUTTON_MIDDLE));
 	_info.push_back(OptionInfo("dragScrollTimeTolerance", &dragScrollTimeTolerance, 300)); // miliSecond
 	_info.push_back(OptionInfo("dragScrollPixelTolerance", &dragScrollPixelTolerance, 10)); // count of pixels
-	_info.push_back(OptionInfo("battleFireSpeed", &battleFireSpeed, 6));
-	_info.push_back(OptionInfo("battleXcomSpeed", &battleXcomSpeed, 30));
-	_info.push_back(OptionInfo("battleAlienSpeed", &battleAlienSpeed, 30));
+	_info.push_back(OptionInfo("battleFireSpeed", &battleFireSpeed, 20));
+	_info.push_back(OptionInfo("battleXcomSpeed", &battleXcomSpeed, 1));
+	_info.push_back(OptionInfo("battleAlienSpeed", &battleAlienSpeed, 1));
 	_info.push_back(OptionInfo("battleNewPreviewPath", (int*)&battleNewPreviewPath, PATH_NONE)); // requires double-click to confirm moves
 	_info.push_back(OptionInfo("fpsCounter", &fpsCounter, false));
 	_info.push_back(OptionInfo("globeDetail", &globeDetail, true));
