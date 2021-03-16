@@ -227,7 +227,14 @@ NewBattleState::NewBattleState() : _craft(0)
 	_btnCancel->onMouseClick((ActionHandler)&NewBattleState::btnCancelClick);
 	_btnCancel->onKeyboardPress((ActionHandler)&NewBattleState::btnCancelClick, Options::keyCancel);
 
-	load();
+	if (Options::runBattle.size() > 0)
+	{
+		load(Options::runBattle);
+	}
+	else
+	{
+		load();
+	}
 }
 
 /**
@@ -544,8 +551,19 @@ void NewBattleState::btnOkClick(Action *)
 
 	_game->popState();
 	_game->popState();
-	_game->pushState(new BriefingState(_craft, base));
+	BriefingState *briefingState = new BriefingState(_craft, base);
+	_game->pushState(briefingState);
 	_craft = 0;
+
+	if (Options::runBattle.size() > 0)
+	{
+		SDL_Event ev;
+		ev.type = SDL_MOUSEBUTTONDOWN;
+		ev.button.button = SDL_BUTTON_LEFT;
+
+		Action click = Action(&ev, 0.0, 0.0, 0, 0);
+		briefingState->btnOkClick(&click);
+	}
 }
 
 /**

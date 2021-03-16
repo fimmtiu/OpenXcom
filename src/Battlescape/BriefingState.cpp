@@ -19,6 +19,7 @@
 #include "BriefingState.h"
 #include "BattlescapeState.h"
 #include "AliensCrashState.h"
+#include "../Engine/Action.h"
 #include "../Engine/Game.h"
 #include "../Engine/LocalizedText.h"
 #include "../Interface/TextButton.h"
