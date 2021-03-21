@@ -233,7 +233,7 @@ NewBattleState::NewBattleState() : _craft(0)
 	}
 	else
 	{
-		load();
+		load(Options::getMasterUserFolder() + "battle.cfg");
 	}
 }
 
@@ -265,7 +265,7 @@ void NewBattleState::init()
  */
 void NewBattleState::load(const std::string &filename)
 {
-	std::string s = Options::getMasterUserFolder() + filename + ".cfg";
+	std::string s = filename;
 	if (!CrossPlatform::fileExists(s))
 	{
 		initSave();
@@ -470,7 +470,11 @@ void NewBattleState::initSave()
  */
 void NewBattleState::btnOkClick(Action *)
 {
-	save();
+	if (Options::runBattle.size() == 0)
+	{
+		save();
+	}
+
 	if (_missionTypes[_cbxMission->getSelected()] != "STR_BASE_DEFENSE" && _craft->getNumSoldiers() == 0 && _craft->getNumVehicles() == 0)
 	{
 		return;
