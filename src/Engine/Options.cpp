@@ -1010,8 +1010,14 @@ void writeNode(const YAML::Node& node, YAML::Emitter& emitter)
  */
 bool save(const std::string &filename)
 {
+	if (Options::runBattle.size() > 0)
+	{
+		return true;
+	}
+
 	std::string s = _configFolder + filename + ".cfg";
 	std::ofstream sav(s.c_str());
+
 	if (!sav)
 	{
 		Log(LOG_WARNING) << "Failed to save " << filename << ".cfg";
