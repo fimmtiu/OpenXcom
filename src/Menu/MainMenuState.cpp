@@ -32,6 +32,7 @@
 #include "OptionsVideoState.h"
 #include "OptionsModsState.h"
 #include "../Engine/Options.h"
+#include "../Engine/Action.h"
 
 namespace OpenXcom
 {
@@ -40,7 +41,18 @@ void GoToMainMenuState::init()
 {
 	Screen::updateScale(Options::geoscapeScale, Options::baseXGeoscape, Options::baseYGeoscape, true);
 	_game->getScreen()->resetDisplay(false);
+	MainMenuState *mainMenuState = new MainMenuState;
 	_game->setState(new MainMenuState);
+
+	if (Options::runBattle.size() > 0)
+	{
+		SDL_Event ev;
+		ev.type = SDL_MOUSEBUTTONDOWN;
+		ev.button.button = SDL_BUTTON_LEFT;
+
+		Action click = Action(&ev, 0.0, 0.0, 0, 0);
+		mainMenuState->btnNewBattleClick(&click);
+	}
 }
 
 /**
@@ -125,7 +137,18 @@ void MainMenuState::btnNewGameClick(Action *)
  */
 void MainMenuState::btnNewBattleClick(Action *)
 {
-	_game->pushState(new NewBattleState);
+	NewBattleState *newBattleState = new NewBattleState;
+	_game->pushState(newBattleState);
+
+	if (Options::runBattle.size() > 0)
+	{
+		SDL_Event ev;
+		ev.type = SDL_MOUSEBUTTONDOWN;
+		ev.button.button = SDL_BUTTON_LEFT;
+
+		Action click = Action(&ev, 0.0, 0.0, 0, 0);
+		newBattleState->btnOkClick(&click);
+	}
 }
 
 /**

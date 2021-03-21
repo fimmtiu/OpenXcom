@@ -19,6 +19,7 @@
 #include <algorithm>
 #include <sstream>
 #include <iomanip>
+#include <iostream>
 #include <SDL_gfxPrimitives.h>
 #include "Map.h"
 #include "Camera.h"
@@ -2055,7 +2056,17 @@ void BattlescapeState::finishBattle(bool abort, int inExitArea)
 		_animTimer->stop();
 		_gameTimer->stop();
 		_game->popState();
-		_game->pushState(new DebriefingState);
+
+		if (Options::runBattle.size() > 0)
+		{
+			printJsonResults();
+			_game->quit();
+		}
+		else
+		{
+			_game->pushState(new DebriefingState);
+		}
+
 		std::string cutscene;
 		if (ruleDeploy)
 		{
@@ -2337,6 +2348,46 @@ void BattlescapeState::stopScrolling(Action *action)
 void BattlescapeState::autosave()
 {
 	_autosave = true;
+}
+
+void BattlescapeState::printJsonResults()
+{
+	unsigned int soldiers_alive = 0, soldiers_wounded = 0, aliens_alive = 0, aliens_wounded = 0;
+	unsigned int turns = _save->getTurn() - 1;
+
+	for (std::vector<BattleUnit*>::iterator i = _save->getUnits()->begin(); i != _save->getUnits()->end(); ++i)
+	{
+		BattleUnit *unit = *i;
+		if (unit->getFaction() == FACTION_HOSTILE)
+		{
+			if (!unit->isOut())
+			{
+				aliens_alive++;
+				if (unit->getHealth() < unit->getBaseStats()->health)
+				{
+					aliens_wounded++;
+				}
+			}
+		}
+		else
+		{
+			if (!unit->isOut())
+			{
+				soldiers_alive++;
+				if (unit->getHealth() < unit->getBaseStats()->health)
+				{
+					soldiers_wounded++;
+				}
+			}
+		}
+	}
+
+	std::cout <<
+		"{\"soldiers_alive\": " << soldiers_alive <<
+		", \"soldiers_wounded\": " << soldiers_wounded <<
+		", \"aliens_alive\": " << aliens_alive <<
+		", \"aliens_wounded\": " << aliens_wounded <<
+		", \"turns\": " << turns << "}";
 }
 
 }

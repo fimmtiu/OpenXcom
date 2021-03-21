@@ -95,6 +95,8 @@ private:
 	BattleItem *getRightHandItem(BattleUnit *unit);
 	/// Gets the built-in melee weapon of a unit, if any.
 	BattleItem *getSpecialMeleeWeapon(BattleUnit *unit);
+	/// Prints a brief summary of the battle to standard output.
+	void printJsonResults();
 public:
 	/// Selects the next soldier.
 	void selectNextPlayerUnit(bool checkReselect = false, bool setReselect = false, bool checkInventory = false, bool checkFOV = true);
