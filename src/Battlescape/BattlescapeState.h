@@ -102,7 +102,7 @@ public:
 	void selectNextPlayerUnit(bool checkReselect = false, bool setReselect = false, bool checkInventory = false, bool checkFOV = true);
 	/// Selects the previous soldier.
 	void selectPreviousPlayerUnit(bool checkReselect = false, bool setReselect = false, bool checkInventory = false);
-	static const int DEFAULT_ANIM_SPEED = 100;
+	static const int DEFAULT_ANIM_SPEED = 1;
 	/// Creates the Battlescape state.
 	BattlescapeState();
 	/// Cleans up the Battlescape state.

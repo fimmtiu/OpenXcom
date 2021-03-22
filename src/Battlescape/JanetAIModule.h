@@ -11,17 +11,14 @@ namespace OpenXcom
   {
   public:
     static JanetTable* janet_env;
-
-    static void SetUp() {
-      janet_init();
-      janet_env = janet_core_env(NULL);
-    }
-
-    static void TearDown() {
-      janet_deinit();
-      janet_env = NULL;
-    }
+    static void SetUp();
+    static void TearDown();
 
     JanetAIModule(SavedBattleGame *save, BattleUnit *unit, Node *node);
+
+  private:
+    Janet _aiFunc;
+
+    std::string slurpFile(std::string &filename);
   };
 }
