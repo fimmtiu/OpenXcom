@@ -146,6 +146,7 @@ void create()
 	_info.push_back(OptionInfo("randomSeed", &randomSeed, -1));
 	_info.push_back(OptionInfo("turnLimit", &turnLimit, -1));
 	_info.push_back(OptionInfo("runBattle", &runBattle, ""));
+	_info.push_back(OptionInfo("aiCode", &aiCode, ""));
 
 	// advanced options
 	_info.push_back(OptionInfo("playIntro", &playIntro, true, "STR_PLAYINTRO", "STR_GENERAL"));
